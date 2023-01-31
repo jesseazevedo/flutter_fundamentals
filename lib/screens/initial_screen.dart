@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nosso_primeiro_projeto/data/task_inherited.dart';
+import 'package:nosso_primeiro_projeto/screens/form_screen.dart';
 
 import '../components/task.dart';
 
@@ -10,51 +12,79 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
-  bool opacidade = true;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: Container(),
-        title: const Text('Tarefas'),
-      ),
-      body: AnimatedOpacity(
-        opacity: (opacidade == true) ? 1 : 0,
-        duration: const Duration(milliseconds: 800),
-        child: ListView(
+        title: Row(
           children: [
-            Task(
-                'Aprender Flutter no café da manhã comendo sucrilhos',
-                'assets/images/dash.png',
-                3, color: Colors.black),
-            Task(
-                'Andar de bike',
-                'assets/images/bike.webp',
-                2, color: Colors.black),
-            Task(
-                'Meditar',
-                'assets/images/meditar.jpeg',
-                5, color: Colors.black),
-            Task(
-                'Ler',
-                'assets/images/livro.jpg',
-                4, color: Colors.black),
-            Task(
-                'Jogar',
-                'assets/images/jogar.jpg',
-                2, color: Colors.black),
-            SizedBox(height: 80,)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 6.0),
+                  child: Container(
+                    child: const Text('Tarefas'),
+                  ),
+                ),
+                Container(
+                    child:
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Text(
+                            'Personal Level',
+                            style: TextStyle(fontSize: 10),
+                          ),
+                        ),
+                        Container(
+                          width: 240,
+                          height: 2,
+                          child: LinearProgressIndicator()
+                        )
+                      ],
+                    ),
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                child:
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: Icon(Icons.refresh),
+                        ),
+                        Container(
+                          child: Text('Score', style: TextStyle(fontSize: 10),)
+                        )
+                      ])
+              ),
+            )
           ],
         ),
       ),
+      body: ListView(
+        children: TaskInherited.of(context).taskList,
+        padding: EdgeInsets.only(top: 8, bottom: 70),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            opacidade = !opacidade;
-          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (contextNew) => FormScreen(
+                taskContext: context,
+              ),
+            ),
+          );
         },
-        child: const Icon(Icons.remove_red_eye),
+        child: const Icon(Icons.add),
       ),
     );
   }
