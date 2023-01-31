@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           // is not restarted.
           primarySwatch: Colors.blue,
         ),
-        home: TaskInherited(child: const InitialScreen(),));
+        home: TaskInherited(child: InitialScreen(),));
   }
 }
 

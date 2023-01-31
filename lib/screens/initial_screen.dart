@@ -5,8 +5,9 @@ import 'package:nosso_primeiro_projeto/screens/form_screen.dart';
 import '../components/task.dart';
 
 class InitialScreen extends StatefulWidget {
-  const InitialScreen({Key? key}) : super(key: key);
+  InitialScreen({Key? key}) : super(key: key);
 
+  double totalScore = 0;
   @override
   State<InitialScreen> createState() => _InitialScreenState();
 }
@@ -41,8 +42,11 @@ class _InitialScreenState extends State<InitialScreen> {
                         ),
                         Container(
                           width: 240,
-                          height: 2,
-                          child: LinearProgressIndicator()
+                          height: 5,
+                          child: LinearProgressIndicator(
+                            color: Colors.white,
+                            value: widget.totalScore/100,
+                          )
                         )
                       ],
                     ),
@@ -58,10 +62,17 @@ class _InitialScreenState extends State<InitialScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          child: Icon(Icons.refresh),
+                          child: IconButton(
+                            icon: const Icon(Icons.refresh),
+                            onPressed: () {
+                              setState(() {
+                                widget.totalScore = TaskInherited.of(context).totalScore() * 10;
+                              });
+                            },
+                          ),
                         ),
                         Container(
-                          child: Text('Score', style: TextStyle(fontSize: 10),)
+                          child: Text('${widget.totalScore.toStringAsFixed(2)}', style: TextStyle(fontSize: 10),)
                         )
                       ])
               ),

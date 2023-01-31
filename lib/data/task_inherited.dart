@@ -19,6 +19,14 @@ class TaskInherited extends InheritedWidget {
     taskList.add(Task(name, photo, difficulty, color: Colors.black,));
   }
 
+  double totalScore() {
+    double totalScore = 0;
+    taskList.forEach((task) {
+      totalScore += ((task.nivel / task.dificuldade) / 10);
+    });
+    return totalScore;
+  }
+
   static TaskInherited of(BuildContext context) {
     final TaskInherited? result =
         context.dependOnInheritedWidgetOfExactType<TaskInherited>();
