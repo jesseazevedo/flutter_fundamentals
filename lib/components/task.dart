@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nosso_primeiro_projeto/data/taskDAO.dart';
 
 import 'difficulty.dart';
 
@@ -6,17 +7,16 @@ class Task extends StatefulWidget {
   final String nome;
   final String foto;
   final int dificuldade;
-  Color? color;
+  int nivel;
+  Color? color = Colors.black;
 
-  Task(this.nome, this.foto, this.dificuldade, {Key? key, this.color})
+  Task(this.nome, this.foto, this.dificuldade, this.nivel, {Key? key, this.color})
       : super(key: key);
-
-  int nivel = 0;
 
   @override
   State<Task> createState() => _TaskState();
 
-  colorChange (double nvl) {
+  colorChange(double nvl) {
     if (nvl <= 0.2) {
       color = Colors.black;
     } else if (nvl <= 0.4) {
@@ -34,7 +34,6 @@ class Task extends StatefulWidget {
 }
 
 class _TaskState extends State<Task> {
-
   bool assetOrNetwork() {
     if (widget.foto.contains('http')) {
       return false;
@@ -75,13 +74,15 @@ class _TaskState extends State<Task> {
                         height: 100,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(4),
-                          child: assetOrNetwork() ? Image.asset(
-                            widget.foto,
-                            fit: BoxFit.cover,
-                          ) : Image.network(
-                            widget.foto,
-                            fit: BoxFit.cover,
-                          ),
+                          child: assetOrNetwork()
+                              ? Image.asset(
+                                  widget.foto,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.network(
+                                  widget.foto,
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ),
                       Column(
@@ -103,12 +104,35 @@ class _TaskState extends State<Task> {
                         height: 52,
                         width: 52,
                         child: ElevatedButton(
+                            onLongPress: () => showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                      title: const Text(
+                                          'Você deseja excluir essa tarefa?'),
+                                      content: const Text(
+                                          'Você está prestes a excluir essa tarefa de sua lista. Deseja remove-la?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(
+                                              context, 'Cancelar'),
+                                          child: const Text('Cancelar'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            TaskDao().delete(widget.nome);
+                                            Navigator.pop(context, 'Sim');
+                                          },
+                                          child: const Text('Sim'),
+                                        ),
+                                      ],
+                                    )),
                             onPressed: () {
                               setState(() {
                                 widget.nivel++;
                                 widget.colorChange((widget.dificuldade > 0)
                                     ? (widget.nivel / widget.dificuldade) / 10
                                     : 1);
+                                TaskDao().save(widget);
                               });
                               // print(widget.nivel);
                             },

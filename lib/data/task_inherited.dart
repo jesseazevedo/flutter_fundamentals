@@ -8,15 +8,15 @@ class TaskInherited extends InheritedWidget {
   }) : super(key: key, child: child);
 
   final List<Task> taskList = [
-    Task('Aprender Flutter', 'assets/images/dash.png', 3, color: Colors.black),
-    Task('Andar de bike', 'assets/images/bike.webp', 2, color: Colors.black),
-    Task('Meditar', 'assets/images/meditar.jpeg', 5, color: Colors.black),
-    Task('Ler', 'assets/images/livro.jpg', 4, color: Colors.black),
-    Task('Jogar', 'assets/images/jogar.jpg', 2, color: Colors.black),
+    Task('Aprender Flutter', 'assets/images/dash.png', 3, 0, color: Colors.black),
+    Task('Andar de bike', 'assets/images/bike.webp', 2, 0, color: Colors.black),
+    Task('Meditar', 'assets/images/meditar.jpeg', 5, 0, color: Colors.black),
+    Task('Ler', 'assets/images/livro.jpg', 4, 0, color: Colors.black),
+    Task('Jogar', 'assets/images/jogar.jpg', 2, 0, color: Colors.black),
   ];
   
   void newTask(String name, String photo, int difficulty) {
-    taskList.add(Task(name, photo, difficulty, color: Colors.black,));
+    taskList.add(Task(name, photo, difficulty, 0, color: Colors.black,));
   }
 
   double totalScore() {
